@@ -2,6 +2,18 @@
 
 Swiss army knife for configuring HLHV.
 
-Currently, it can generate new keys. The usage for doing this is:
+## Usage
 
-`wrench newkey -t|--text "<value>" [-c|--cost <integer>]`
+`wrench <Command> [-h|--help]`
+
+### Commands
+
+- `newkey`: Generate a new key
+- `adduser`: Add a user for the specified cell
+- `restart`: Deletes the user for the specified cell
+
+### Arguments
+
+- `-h|--help`: Print help information
+- `-c|--cell`: Name of the cell. Default: `queen`
+- `-t|--text`: Contents of the key as text.
