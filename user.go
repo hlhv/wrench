@@ -11,63 +11,83 @@ import (
 func doAddUser (name string) {
         fullName := "hlhv-" + name
 
-        var cmd *exec.Cmd
-
+        // BUSYBOX
         adduser, err := exec.LookPath("adduser")
         if err == nil {
-                // we are using adduser
-                // adduser: -SHD
-                cmd = exec.Command(adduser, fullName, "-SHD")
-        } else {
-                useradd, err := exec.LookPath("useradd")
-                if err == nil {
-                        // we are using useradd
-                        // useradd: -rUM --shell /sbin/nologin
-                        cmd = exec.Command (
-                                useradd, fullName, "-rUM",
-                                "--shell", "/sbin/nologin")
-                }
+                addgroup, _ := exec.LookPath("addgroup")
+                tryCommand (exec.Command (addgroup, fullName, "-S"),
+                        "could not add group")
+                tryCommand (exec.Command (adduser, fullName, "-SHDG", fullName),
+                        "could not add user")
+                return
         }
 
-        if cmd == nil {
-                fmt.Println("ERR your system does not support adding users.")
-                os.Exit(1)
+        // GNU
+        useradd, err := exec.LookPath("useradd")
+        if err == nil {
+                tryCommand (exec.Command (
+                        useradd, fullName, "-rUM",
+                        "--shell", "/sbin/nologin"), "could not add user")
+                return
         }
-        
-        output, err := cmd.CombinedOutput()
-        if err != nil {
-                fmt.Println("ERR could not add user:", string(output))
-                os.Exit(1)
-        }
+
+        fmt.Println("ERR your system does not support adding users.")
+        os.Exit(1)
 }
 
 func doDelUser (name string) {
         fullName := "hlhv-" + name
 
-        var cmd *exec.Cmd
-
+        // BUSYBOX
         deluser, err := exec.LookPath("deluser")
         if err == nil {
-                // we are using deluser
-                // deluser: --remove-home
-                cmd = exec.Command(deluser, fullName, "--remove-home")
-        } else {
-                userdel, err := exec.LookPath("userdel")
-                if err == nil {
-                        // we are using userdel
-                        // userdel: -r
-                        cmd = exec.Command(userdel, fullName, "-r")
-                }
+                tryCommand (exec.Command (deluser, fullName, "--remove-home"),
+                        "could not delete user")
+                return
         }
 
-        if cmd == nil {
-                fmt.Println("ERR your system does not support deleting users.")
-                os.Exit(1)
+        // GNU
+        userdel, err := exec.LookPath("userdel")
+        if err == nil {
+                tryCommand (exec.Command (userdel, fullName, "-r"),
+                        "could not delete user")
+                groupdel, _ := exec.LookPath("groupdel")
+                tryCommand (exec.Command (groupdel, fullName),
+                        "could not delete group")
+                return
         }
-        
+
+        fmt.Println("ERR your system does not support deleting users.")
+        os.Exit(1)
+}
+
+func doAuthUser (user string, name string) {
+        fullName := "hlhv-" + name
+
+        // BUSYBOX
+        adduser, err := exec.LookPath("adduser")
+        if err == nil {
+                tryCommand (exec.Command (adduser, user, fullName),
+                        "could not add user to group " + fullName)
+                return
+        }
+
+        // GNU
+        useradd, err := exec.LookPath("usermod")
+        if err == nil {
+                tryCommand (exec.Command (useradd, "-a", "-g", fullName, user),
+                        "could not add user to group " + fullName)
+                return
+        }
+
+        fmt.Println("ERR your system does not support modifying users.")
+        os.Exit(1)
+}
+
+func tryCommand (cmd *exec.Cmd, failReason string) {
         output, err := cmd.CombinedOutput()
         if err != nil {
-                fmt.Println("ERR could not delete user:", string(output))
+                fmt.Println("ERR " + failReason + ":", string(output))
                 os.Exit(1)
         }
 }

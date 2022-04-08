@@ -39,6 +39,21 @@ func main () {
                 Help:     "Cell who's user will be deleted",
                 Default:  "queen",
         })
+
+        authUserCommand := parser.NewCommand (
+                "authuser",
+                "authorizes a user to access files for the specified cell",
+        )
+        authUserCell := authUserCommand.String ("c", "cell", &argparse.Options {
+                Required: false,
+                Help:     "Cell to grant access to",
+                Default:  "queen",
+        })
+        authUserUser := authUserCommand.String ("u", "user", &argparse.Options {
+                Required: true,
+                Help:     "User to be given access",
+        })
+
         
         err := parser.Parse(os.Args)
         if err != nil {
@@ -52,5 +67,7 @@ func main () {
                 doAddUser(*addUserCell)
         } else if delUserCommand.Happened() {
                 doDelUser(*delUserCell)
+        } else if authUserCommand.Happened() {
+                doAuthUser(*authUserUser, *authUserCell)
         }
 }
