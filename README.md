@@ -10,7 +10,7 @@ Swiss army knife for configuring HLHV.
 
 - `newkey`: Generate a new key
 - `adduser`: Add a user for the specified cell
-- `restart`: Deletes the user for the specified cell
+- `deluser`: Deletes the user for the specified cell
 
 ### Arguments
 
