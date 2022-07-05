@@ -14,10 +14,11 @@ Swiss army knife for configuring HLHV.
 - `adduser`: Add a user for the specified cell
 - `deluser`: Deletes the user for the specified cell
 - `authuser`: Authorizes a user to access files for the specified cell
+- `own`: Recursively gives ownership of a file or directory to the specified cell
 
 ### Arguments
 
-- `-h|--help`: Print help information`
+- `-h|--help`: Print help information
 - `newkey`
   - `-t|--text`: Contents of the key as text
   - `-c|--cost`: Cost of the key
@@ -28,3 +29,6 @@ Swiss army knife for configuring HLHV.
 - `authuser`
   - `-c|--cell`: Cell to grant access to. Default: `queen`
   - `-u|--user`: User to be given access
+- `own`
+  - `-c|--cell`: Cell to give ownership to. Default: `queen`
+  - `-f|--file`: File or directory to own. Default: `.`
