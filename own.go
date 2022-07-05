@@ -6,10 +6,9 @@ import "strconv"
 import "os/user"
 import "path/filepath"
 
-
 func doOwn(path string, name string) {
 	fullName := "hlhv-" + name
-	
+
 	userInfo, err := user.Lookup(fullName)
 	uid, _ := strconv.Atoi(userInfo.Uid)
 	gid, _ := strconv.Atoi(userInfo.Gid)
@@ -27,7 +26,7 @@ func doOwn(path string, name string) {
 		if err != nil {
 			fmt.Println("ERR could not traverse filesystem:", err)
 		}
-		
+
 		err = os.Chown(filePath, uid, gid)
 		if err != nil {
 			fmt.Println(
@@ -36,7 +35,7 @@ func doOwn(path string, name string) {
 		}
 		return nil
 	})
-	
+
 	if err != nil {
 		fmt.Println("ERR could not traverse filesystem.")
 		return

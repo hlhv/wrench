@@ -42,7 +42,7 @@ func main() {
 
 	authUserCommand := parser.NewCommand(
 		"authuser",
-		"authorizes a user to access files for the specified cell",
+		"Authorizes a user to access files for the specified cell",
 	)
 	authUserCell := authUserCommand.String("c", "cell", &argparse.Options{
 		Required: false,
@@ -56,8 +56,8 @@ func main() {
 
 	ownCommand := parser.NewCommand(
 		"own",
-		"recursively gives ownership of a file or directory to the " +
-		"specified cell",
+		"Recursively gives ownership of a file or directory to the "+
+			"specified cell",
 	)
 	ownCell := ownCommand.String("c", "cell", &argparse.Options{
 		Required: false,
