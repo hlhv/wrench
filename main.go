@@ -54,6 +54,22 @@ func main() {
 		Help:     "User to be given access",
 	})
 
+	ownCommand := parser.NewCommand(
+		"own",
+		"recursively gives ownership of a file or directory to the " +
+		"specified cell",
+	)
+	ownCell := ownCommand.String("c", "cell", &argparse.Options{
+		Required: false,
+		Help:     "Cell to give ownership to",
+		Default:  "queen",
+	})
+	ownFile := ownCommand.String("f", "file", &argparse.Options{
+		Required: false,
+		Help:     "File or directory to own",
+		Default:  ".",
+	})
+
 	err := parser.Parse(os.Args)
 	if err != nil {
 		fmt.Print(parser.Usage(err))
@@ -68,5 +84,7 @@ func main() {
 		doDelUser(*delUserCell)
 	} else if authUserCommand.Happened() {
 		doAuthUser(*authUserUser, *authUserCell)
+	} else if ownCommand.Happened() {
+		doOwn(*ownFile, *ownCell)
 	}
 }
