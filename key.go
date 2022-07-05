@@ -11,7 +11,7 @@ import (
 func newKey(text *string, cost *int) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(*text), *cost)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("ERR could not generate key:", err)
 		os.Exit(1)
 	}
 
