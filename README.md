@@ -1,5 +1,7 @@
 # wrench
 
+[![A+ Golang report card.](https://img.shields.io/badge/go%20report-A+-brightgreen.svg?style=flat)](https://goreportcard.com/report/github.com/hlhv/wrench)
+
 Swiss army knife for configuring HLHV.
 
 ## Usage
