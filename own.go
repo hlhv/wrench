@@ -33,6 +33,13 @@ func doOwn(path string, name string) {
 				"ERR could not take ownership of file:",
 				err)
 		}
+
+		err = os.Chmod(filePath, 0770)
+		if err != nil {
+			fmt.Println(
+				"ERR could not change mode of file:",
+				err)
+		}
 		return nil
 	})
 
