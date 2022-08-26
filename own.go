@@ -34,7 +34,11 @@ func doOwn(path string, name string) {
 				err)
 		}
 
-		err = os.Chmod(filePath, 0770)
+		if file.IsDir() {
+			err = os.Chmod(filePath, 0770)
+		} else {
+			err = os.Chmod(filePath, 0660)
+		}
 		if err != nil {
 			fmt.Println(
 				"ERR could not change mode of file:",
